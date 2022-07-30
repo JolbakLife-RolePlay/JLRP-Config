@@ -11,13 +11,13 @@ local function SyncMe()
 	elseif not IsEntityDead(ped) and z < 0.0 then
 		SetEntityCoords(ped, x, y, zNew)
 		SetEntityCoords(ped, x, y, z+100.0)
-		Framework.ShowNotification('~g~10 Sanie Sabr Konid...')
+		Framework.ShowNotification('10 Sanie Sabr Konid...', 'info')
 		SetEntityInvincible(ped, true)
 		Wait(8500)
 		SetEntityInvincible(ped, false)
-		Framework.ShowNotification('~g~Done')
+		Framework.ShowNotification('Done', 'success')
 	else 
-		Framework.ShowNotification('~y~Dar Hale Hazer Nemishe Az In Command Esefade Koni...')
+		Framework.ShowNotification('~Dar Hale Hazer Nemishe Az In Command Esefade Koni...', 'error')
 	end
 end
 
