@@ -231,4 +231,6 @@ function EjectFromVehicle()
     SetEntityVelocity(ped, veloc.x*4,veloc.y*4,veloc.z*4)
     local ejectspeed = math.ceil(GetEntitySpeed(ped) * 8)
     SetEntityHealth(ped, (GetEntityHealth(ped) - ejectspeed))
+	TriggerServerEvent('JLRP-Framework:addStress', math.random(5, 10))
+	Framework.ShowNotification("You are feeling stress!", "error", 1500)
 end
