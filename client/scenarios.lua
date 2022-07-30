@@ -14,7 +14,7 @@ CreateThread(function()
         2017590552, -- LSIA planes
         2141866469, -- Sandy Shores planes
         1409640232, -- Grapeseed planes
-        "ng_planes", -- Far up in the skies jets
+        `ng_planes`, -- Far up in the skies jets
     }
     local SUPPRESSED_MODELS = {
         "SHAMAL", -- They spawn on LSIA and try to take off
