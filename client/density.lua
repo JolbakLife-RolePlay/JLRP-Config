@@ -17,7 +17,7 @@ CreateThread(function()
 		SetPedDensityMultiplierThisFrame(density['peds'])
 		SetScenarioPedDensityMultiplierThisFrame(density['scenario'], density['scenario']) -- Walking NPC Density
 		
-		RemoveVehiclesFromGeneratorsInArea(x - 5000.0, y - 5000.0, z - 5000.0, x + 5000.0, y + 5000.0, z + 5000.0)  -- Whole Map
+		RemoveVehiclesFromGeneratorsInArea(x - 10000.0, y - 10000.0, z - 10000.0, x + 10000.0, y + 10000.0, z + 10000.0)  -- Whole Map
 		
 		DisablePlayerVehicleRewards(id)
 
