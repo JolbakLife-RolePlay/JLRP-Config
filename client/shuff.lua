@@ -40,6 +40,7 @@ local function disableAutoShuff()
 			end
 		else
 			if isHelpShown then
+				lib.hideTextUI()
 				isHelpShown = false
 			end
 			Wait(200)
