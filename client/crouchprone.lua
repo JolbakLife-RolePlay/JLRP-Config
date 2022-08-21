@@ -2,49 +2,53 @@ local stage = 0
 local movingForward = false
 local loopIsRunning = false
 
+local vehicle = false
+
+local function ResetStage()
+	stage = 0
+	ClearPedTasksImmediately(Framework.PlayerData.ped)
+	ResetAnimSet()
+	SetPedStealthMovement(Framework.PlayerData.ped,0,0)
+end
+
 AddEventHandler("onKeyUp", function(key)
-	if key == "lcontrol" then
+	if key == "lcontrol" and not vehicle then
 		stage = stage + 1
-		local ped1 = Framework.PlayerData.ped
 		
 		if stage ~= 0 then
 			if stage == 1 then
 				-- Crouch stuff
-				ClearPedTasks(ped1)
+				ClearPedTasks(Framework.PlayerData.ped)
 				RequestAnimSet("move_ped_crouched")
 				while not HasAnimSetLoaded("move_ped_crouched") do
 					Wait(0)
 				end
-				SetPedMovementClipset(ped1, "move_ped_crouched",1.0)
-				SetPedWeaponMovementClipset(ped1, "move_ped_crouched",1.0)
-				SetPedStrafeClipset(ped1, "move_ped_crouched_strafing",1.0)
+				SetPedMovementClipset(Framework.PlayerData.ped, "move_ped_crouched",1.0)
+				SetPedWeaponMovementClipset(Framework.PlayerData.ped, "move_ped_crouched",1.0)
+				SetPedStrafeClipset(Framework.PlayerData.ped, "move_ped_crouched_strafing",1.0)
 			elseif stage == 2 then
-				ClearPedTasks(ped1)
+				ClearPedTasks(Framework.PlayerData.ped)
 				RequestAnimSet("move_crawl")
 				while not HasAnimSetLoaded("move_crawl") do
 					Wait(0)
 				end
 			elseif stage > 2 then
-				stage = 0
-				ClearPedTasksImmediately(ped1)
-				ResetAnimSet()
-				SetPedStealthMovement(ped1,0,0)
+				ResetStage()
 			end
 			if loopIsRunning then return end
 		end
 		
 		while stage ~= 0 do
 			loopIsRunning = true
-			local ped = Framework.PlayerData.ped
-			if not IsPedSittingInAnyVehicle(ped) and not IsPedFalling(ped) and not IsPedSwimming(ped) and not IsPedSwimmingUnderWater(ped) then
+			if not IsPedSittingInAnyVehicle(Framework.PlayerData.ped) and not IsPedFalling(Framework.PlayerData.ped) and not IsPedSwimming(Framework.PlayerData.ped) and not IsPedSwimmingUnderWater(Framework.PlayerData.ped) then
 				
 				if stage == 1 then
-					if GetEntitySpeed(ped) > 1.0 then
-						SetPedWeaponMovementClipset(ped, "move_ped_crouched",1.0)
-						SetPedStrafeClipset(ped, "move_ped_crouched_strafing",1.0)
-					elseif GetEntitySpeed(ped) < 1.0 and (GetFollowPedCamViewMode() == 4 or GetFollowVehicleCamViewMode() == 4) then
-						ResetPedWeaponMovementClipset(ped)
-						ResetPedStrafeClipset(ped)
+					if GetEntitySpeed(Framework.PlayerData.ped) > 1.0 then
+						SetPedWeaponMovementClipset(Framework.PlayerData.ped, "move_ped_crouched",1.0)
+						SetPedStrafeClipset(Framework.PlayerData.ped, "move_ped_crouched_strafing",1.0)
+					elseif GetEntitySpeed(Framework.PlayerData.ped) < 1.0 and (GetFollowPedCamViewMode() == 4 or GetFollowVehicleCamViewMode() == 4) then
+						ResetPedWeaponMovementClipset(Framework.PlayerData.ped)
+						ResetPedStrafeClipset(Framework.PlayerData.ped)
 					end
 				elseif stage == 2 then
 					DisableControlAction(0, 21, true) -- sprint
@@ -54,23 +58,23 @@ AddEventHandler("onKeyUp", function(key)
 
 					if (IsControlPressed(0, 32) and not movingForward) and Config.EnableProne  then
 						movingForward = true
-						SetPedMoveAnimsBlendOut(ped)
-						local pronepos = GetEntityCoords(ped)
-						TaskPlayAnimAdvanced(ped, "move_crawl", "onfront_fwd", pronepos.x, pronepos.y, pronepos.z+0.1, 0.0, 0.0, GetEntityHeading(ped), 100.0, 0.4, 1.0, 7, 2.0, 1, 1)
+						SetPedMoveAnimsBlendOut(Framework.PlayerData.ped)
+						local pronepos = GetEntityCoords(Framework.PlayerData.ped)
+						TaskPlayAnimAdvanced(Framework.PlayerData.ped, "move_crawl", "onfront_fwd", pronepos.x, pronepos.y, pronepos.z+0.1, 0.0, 0.0, GetEntityHeading(Framework.PlayerData.ped), 100.0, 0.4, 1.0, 7, 2.0, 1, 1)
 						Wait(500)
 					elseif (not IsControlPressed(0, 32) and movingForward) then
-						local pronepos = GetEntityCoords(ped)
-						TaskPlayAnimAdvanced(ped, "move_crawl", "onfront_fwd", pronepos.x, pronepos.y, pronepos.z+0.1, 0.0, 0.0, GetEntityHeading(ped), 100.0, 0.4, 1.0, 6, 2.0, 1, 1)
+						local pronepos = GetEntityCoords(Framework.PlayerData.ped)
+						TaskPlayAnimAdvanced(Framework.PlayerData.ped, "move_crawl", "onfront_fwd", pronepos.x, pronepos.y, pronepos.z+0.1, 0.0, 0.0, GetEntityHeading(Framework.PlayerData.ped), 100.0, 0.4, 1.0, 6, 2.0, 1, 1)
 						Wait(500)
 						movingForward = false
 					end
 
 					if IsControlPressed(0, 34) then
-						SetEntityHeading(ped,GetEntityHeading(ped) + 1)
+						SetEntityHeading(Framework.PlayerData.ped,GetEntityHeading(Framework.PlayerData.ped) + 1)
 					end
 
 					if IsControlPressed(0, 9) then
-						SetEntityHeading(ped,GetEntityHeading(ped) - 1)
+						SetEntityHeading(Framework.PlayerData.ped,GetEntityHeading(Framework.PlayerData.ped) - 1)
 					end
 				end
 			else
@@ -111,3 +115,12 @@ function RequestWalking(set)
         Wait(1)
     end
 end
+
+AddEventHandler('JLRP-Config:Cache:Client:OnChange', function(Key, Value, AllCache)
+	if Key == 'Vehicle' then
+		if Value and stage ~= 0 then ResetStage() end
+		vehicle = Value
+	else
+		return
+	end
+end)
